@@ -6,26 +6,19 @@
         Modal
     } from "carbon-components-svelte";
     import Table from "./Table.svelte";
-    import {writable} from "svelte/store";
+    import {downloadData, status} from "../../store.ts";
 
     const maxFileNumber = 5;
+    const acceptedFileTypes=[
+        ".mp4",
+        ".avi"
+    ];
 
     let fileUploader;
     let files = [];
     let loadedFiles = [];
     let open = false;
 
-    const data = writable(JSON.parse(localStorage.getItem("data") || "[]"))
-    data.subscribe(val => {
-        console.log(val)
-        localStorage.setItem("data", JSON.stringify(val))
-    })
-
-    const status = writable(localStorage.getItem("status") || "wait")
-    status.subscribe(val => {
-        console.log(val)
-        localStorage.setItem("status", val)
-    });
     const onUpload = () => {
         if(loadedFiles.length + files.length > maxFileNumber) {
             open = true;
@@ -45,9 +38,9 @@
         $status = "inProgress"
         //simulate working shit
         //TODO: await answer and stop awaiting if cansel
-        $data = []
+        $downloadData = []
         setTimeout(() => {
-            $data = [ ...$data,
+            $downloadData = [ ...$downloadData,
                 {id: "a", time: "19.12.2020 13:50", longitude: "14.2323", latitude: "14.2323"},
                 {id: "b", time: "18.11.2021 13:50", longitude: "15.2323", latitude: "15.2323"},
                 {id: "c", time: "17.10.2022 13:50", longitude: "16.2323", latitude: "16.2323"},
@@ -55,7 +48,7 @@
         }, 2000)
         setTimeout(() => {
             $status = "done";
-            $data = [ ...$data,
+            $downloadData = [ ...$downloadData,
                 {id: "d", time: "19.12.2020 13:50", longitude: "14.2323", latitude: "14.2323"},
                 {id: "e", time: "18.11.2021 13:50", longitude: "15.2323", latitude: "15.2323"},
                 {id: "f", time: "17.10.2022 13:50", longitude: "16.2323", latitude: "16.2323"},
@@ -81,6 +74,7 @@
             > Отправить </Button>
             <FileUploaderButton
                 bind:this={fileUploader}
+                accept = {acceptedFileTypes}
                 multiple
                 labelText="Загрузить файл"
                 status="complete"
@@ -96,7 +90,7 @@
     </div>
 
     <div class="table-container">
-        <Table status={$status} data={$data}/>
+        <Table status={$status} data={$downloadData}/>
     </div>
 </div>
 

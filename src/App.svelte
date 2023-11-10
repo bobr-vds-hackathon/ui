@@ -1,10 +1,22 @@
 <script lang="ts">
-  import Header from "./lib/Header.svelte";
-  import "carbon-components-svelte/css/g10.css";
-  $: document.documentElement.setAttribute("theme", "g10");
-  import {pageIndex} from "./store.ts";
-  import DownloadPage from "./lib/Download/DownloadPage.svelte";
-  import CamerasPage from "./lib/Cameras/CamerasPage.svelte";
+    import Header from "./lib/Header.svelte";
+    import "carbon-components-svelte/css/g10.css";
+    $: document.documentElement.setAttribute("theme", "g10");
+    import {pageIndex, downloadData, camerasData, status} from "./store.ts";
+    import DownloadPage from "./lib/Download/DownloadPage.svelte";
+    import CamerasPage from "./lib/Cameras/CamerasPage.svelte";
+
+    //WebSocketHandling
+    let socket;
+    socket = new WebSocket("ws://localhost:8080")
+    socket.addEventListener('open', (e) => {
+        console.log("connected to webSocket", e)
+    })
+
+    socket.addEventListener('message', (event) => {
+        console.log("got message", event.data)
+
+    })
 </script>
 
 <Header />
