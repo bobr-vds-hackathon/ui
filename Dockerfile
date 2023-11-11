@@ -10,7 +10,7 @@ COPY . .
 RUN npm run build
 FROM nginx:1.19-alpine AS production
 
-COPY –from=builder /app/public /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 8081
 
-CMD [“nginx”, “-g”, “daemon off;”]
+CMD ["nginx", "-g", "daemon off;"]

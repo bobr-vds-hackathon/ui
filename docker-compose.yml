@@ -3,7 +3,7 @@ services:
   bobr-ui:
     build: .
     ports:
-      - '8081:8081'
+      - '8081:80'
     environment:
       - TZ=Europe/Moscow
     image: bobr-ui
