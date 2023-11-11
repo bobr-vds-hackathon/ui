@@ -1,15 +1,21 @@
 <script>
     import {Button, Checkbox, Form} from "carbon-components-svelte";
+    import {sendCorrection} from "../../api.js";
 
     export let src = "http://placekitten.com/g/600/300";
+    let buttonText = "Отправить"
 </script>
 
 <div class="container">
     <img {src} alt="Не удалось загрузить изображение"/>
 
-    <Form style="max-width: 30%">
+    <Form style="max-width: 30%" on:submit={() => {
+        sendCorrection({
+
+        })
+    }}>
         <Checkbox id="checkbox-1" labelText="Произошло ложное срабатывание системы"/>
-        <Button type="submit" style="margin-top: 2vh">Отправить</Button>
+        <Button type="submit" style="margin-top: 2vh">{}</Button>
     </Form>
 </div>
 

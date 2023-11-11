@@ -21,8 +21,8 @@
             size = "tall"
             headers = {[
                 {key:"time", value:"Время"},
-                {key:"longitude", value: "Долгота"},
-                {key:"latitude", value:"Широта"},
+                {key:"long", value: "Долгота"},
+                {key:"lat", value:"Широта"},
             ]}
             rows = {data}
             {pageSize}

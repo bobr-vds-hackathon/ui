@@ -23,3 +23,6 @@ export const filename = writable("")
 
 // @ts-ignore
 export const idName = new Map()
+export const idData = new Map()
+
+export const error = writable(false)

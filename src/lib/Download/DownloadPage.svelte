@@ -6,7 +6,7 @@
         Modal
     } from "carbon-components-svelte";
     import Table from "./Table.svelte";
-    import {downloadData, filename, idName, status, videoId} from "../../store.ts";
+    import {downloadData, error, filename, idName, status, videoId} from "../../store.ts";
     import {sendVideo, socket} from "../../api.js"
 
     const maxFileNumber = 1;
@@ -62,6 +62,7 @@
                 idName.set($videoId, $filename)
             }, () => {
                 $status = "wait"
+                $error = true
             })
         })
         loadedFiles = []

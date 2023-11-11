@@ -2,7 +2,8 @@
     import {Button, Form, NumberInput, PasswordInput, TextInput} from "carbon-components-svelte";
     import Table from "./Table.svelte";
     import {writable} from "svelte/store";
-    import {camerasData} from "../../store.ts";
+    import {camerasData, idData, videoId} from "../../store.ts";
+    import {socket} from "../../api.js";
 
     let login = "", password = "", url="";
     let long = 0, lat = 0;
@@ -22,6 +23,16 @@
 
     const onSubmitForm = (e) => {
         e.preventDefault();
+        idData.set($videoId, formData)
+        const dataString = JSON.stringify(formData);
+        const body = {
+            command: "stream",
+            args: {
+                "stream": dataString
+            }
+        }
+        const jsonBody = JSON.stringify(body)
+        socket.send(jsonBody)
     }
 </script>
 <div class="container">
@@ -29,8 +40,8 @@
         <label style="font-size: 3vh; margin-bottom: 2vh">Добавить камеру</label>
         <Form on:submit={onSubmitForm}>
             <TextInput bind:value={url} labelText="Camera url" size="xl" required={true}/>
-            <TextInput bind:value={login} labelText="Login" size="xl" required={true}/>
-            <PasswordInput bind:value={password} labelText="Password" size="xl" required={true}/>
+            <TextInput bind:value={login} labelText="Login" size="xl"/>
+            <PasswordInput bind:value={password} labelText="Password" size="xl"/>
             <NumberInput bind:value={lat}
                 label="Широта"
                 size="xl"
