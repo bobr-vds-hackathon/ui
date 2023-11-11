@@ -2,9 +2,13 @@
 import {camerasData, downloadData, error, idData, idName, videoId} from "./store.ts";
 import {convertDateFormat} from "./util.js";
 
-const socket = new WebSocket("ws://bobr.frieren.argraur.dev/ws")
+let socket = new WebSocket("wss://bobr.frieren.argraur.dev/ws")
 socket.addEventListener('open', (e) => {
-    //console.log("Connecte to WebSocket")
+    //console.log("Connected to WebSocket")
+})
+
+socket.addEventListener('close', (e)=> {
+    socket = new WebSocket("wss://bobr.frieren.argraur.dev/ws")
 })
 socket.addEventListener('message', (event) => {
     const message = JSON.parse(event.data)

@@ -45,6 +45,7 @@
     }
 
     const onSend = () => {
+        if(loadedFiles.length === 0) return
         if($status === "inProgress") return
         $status = "inProgress"
         socket.send(JSON.stringify(
