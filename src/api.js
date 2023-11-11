@@ -30,7 +30,8 @@ socket.addEventListener('message', (event) => {
                 timestamp: convertDateFormat(message.timestamp),
                 file: message.file,
                 imgSrc: "data:image/jpeg;base64," + message.base64Image,
-                name: idName.get(message.id)
+                name: idName.get(message.id),
+                videoId: message.id
             }]
             downloadData.set(newData)
         } else {
@@ -41,7 +42,8 @@ socket.addEventListener('message', (event) => {
                 long: idData.get(message.id).long,
                 timestamp: convertDateFormat(message.timestamp),
                 file: message.file,
-                imgSrc: "data:image/jpeg;base64," + message.base64Image
+                imgSrc: "data:image/jpeg;base64," + message.base64Image,
+                videoId: message.id
             }]
             camerasData.set(newData)
         }
