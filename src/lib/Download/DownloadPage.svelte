@@ -57,6 +57,7 @@
         $filename = loadedFiles[0].name
         waitForVideoId(() => {
             data.append('id', $videoId)
+            console.log($videoId)
             sendVideo(data, () => {
                 $status = "wait"
                 idName.set($videoId, $filename)
