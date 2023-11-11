@@ -19,7 +19,7 @@
             id: id,
             file: file
         }
-        console.log(JSON.stringify(data))
+        //console.log(JSON.stringify(data))
         sendCorrection(JSON.stringify(data), () => {buttonText="Спасибо"}, () => {})
     }}>
         <Checkbox id={id + file} labelText="Произошло ложное срабатывание системы" bind:checked/>
