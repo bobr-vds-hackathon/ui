@@ -7,6 +7,7 @@
         Pagination,
     } from "carbon-components-svelte";
     import TableInner from "../Components/TableInner.svelte";
+    import {videoId} from "../../store.ts";
     export let status = "wait"; // inProgress or done
     export let data = [];
 
@@ -14,18 +15,7 @@
     let page = 1;
     let filteredRowIds = [];
     let statusMessage = "Загрузите и отправьте видео на детекцию";
-    $: if(status) {
-        changeStatusMessage(status)
-    }
-    const changeStatusMessage = (status) => {
-        if(status === "done") {
-            statusMessage = "Обработка завершена"
-        } else if (status === "inProgress") {
-            statusMessage = "Обработка в процессе"
-        } else {
-            statusMessage = "Загрузите и отправьте видео на детекцию"
-        }
-    }
+
 </script>
 <div style="width: 100%; max-height: 100%">
     <DataTable
@@ -33,16 +23,15 @@
             title ={statusMessage}
             size = "tall"
             headers = {[
-                {key:"time", value:"Время"},
-                {key:"longitude", value: "Долгота"},
-                {key:"latitude", value:"Широта"},
+                {key:"timestamp", value:"Время детекции"},
+                {key:"name", value: "Название видео"},
             ]}
             rows = {data}
             {pageSize}
             {page}
     >
         <svelte:fragment slot="expanded-row" let:row>
-            <TableInner />
+            <TableInner src={row.imgSrc}/>
         </svelte:fragment>
 
         <Toolbar>

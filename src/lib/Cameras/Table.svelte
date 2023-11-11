@@ -7,7 +7,6 @@
         Pagination,
     } from "carbon-components-svelte";
     import TableInner from "../Components/TableInner.svelte";
-    export let status = "wait"; // inProgress or done
     export let data = [];
 
     let pageSize = 5;

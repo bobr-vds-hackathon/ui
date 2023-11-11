@@ -4,9 +4,9 @@
     import {writable} from "svelte/store";
     import {camerasData} from "../../store.ts";
 
-    let login = "", password = "";
+    let login = "", password = "", url="";
     let long = 0, lat = 0;
-    let step = 0.0001;
+    let step = 0.000000001;
 
     let formData = {}
 
@@ -14,6 +14,7 @@
         formData = {
             login: login,
             password: password,
+            url: url,
             lat: lat,
             long: long
         }
@@ -21,13 +22,13 @@
 
     const onSubmitForm = (e) => {
         e.preventDefault();
-        console.log(formData)
     }
 </script>
 <div class="container">
     <div class="form-container">
         <label style="font-size: 3vh; margin-bottom: 2vh">Добавить камеру</label>
         <Form on:submit={onSubmitForm}>
+            <TextInput bind:value={url} labelText="Camera url" size="xl" required={true}/>
             <TextInput bind:value={login} labelText="Login" size="xl" required={true}/>
             <PasswordInput bind:value={password} labelText="Password" size="xl" required={true}/>
             <NumberInput bind:value={lat}
@@ -77,7 +78,6 @@
         flex-direction: row;
         justify-content: space-between;
         justify-items: center;
-        /*background: #646cff;*/
     }
 </style>
 

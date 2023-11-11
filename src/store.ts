@@ -1,4 +1,4 @@
-import { writable} from "svelte/store";
+import {readable, writable} from "svelte/store";
 export const pageIndex = writable(0)
 
 export const camerasData = writable(JSON.parse(localStorage.getItem("camerasData") || "[]"))
@@ -6,6 +6,7 @@ camerasData.subscribe(val => {
     localStorage.setItem("camerasData", JSON.stringify(val))
 })
 
+localStorage.setItem("downloadData", "[]")
 export const downloadData = writable(JSON.parse(localStorage.getItem("downloadData") || "[]"))
 downloadData.subscribe(val => {
     localStorage.setItem("downloadData", JSON.stringify(val))
@@ -16,15 +17,9 @@ status.subscribe(val => {
     localStorage.setItem("downloadStatus", val)
 });
 
-export const sessionId = writable(localStorage.getItem("sessionId") || "")
+export const videoId = writable("")
 
-sessionId.subscribe(val => {
-    let object = {
-        value: val,
-        timestamp: new Date().getTime()
-    }
-    localStorage.setItem("sessionId", JSON.stringify(object))
-})
+export const filename = writable("")
 
-
-
+// @ts-ignore
+export const idName = new Map()

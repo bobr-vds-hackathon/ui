@@ -6,7 +6,7 @@
 <div class="gap">
 </div>
 <header>
-    <div> а что у нас в качестве лого (.!.) </div>
+    <div></div>
     <ContentSwitcher style="height: 100%; width:50%" on:change = {event => pageIndex.set(event.detail)}>
         <Switch text="Загрузить видео" style="font-size: 2.5vh"/>
         <Switch text="Подключить камеры" style="font-size: 2.5vh"/>

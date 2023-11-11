@@ -6,9 +6,10 @@
         Modal
     } from "carbon-components-svelte";
     import Table from "./Table.svelte";
-    import {downloadData, status} from "../../store.ts";
+    import {downloadData, filename, idName, status, videoId} from "../../store.ts";
+    import {sendVideo, socket} from "../../api.js"
 
-    const maxFileNumber = 5;
+    const maxFileNumber = 1;
     const acceptedFileTypes=[
         ".mp4",
         ".avi"
@@ -18,50 +19,60 @@
     let files = [];
     let loadedFiles = [];
     let open = false;
+    let tries = 0;
+    const waitForVideoId = (onSuccess) => {
+        setTimeout(() => {
+            if($videoId === "" && tries < 10){
+                waitForVideoId()
+                tries += 1
+            } else if(tries >= 10){
+                $status = "wait"
+            } else {
+                onSuccess();
+            }
+        }, 1000)
+    }
+
 
     const onUpload = () => {
-        if(loadedFiles.length + files.length > maxFileNumber) {
+        if(files.length > maxFileNumber) {
             open = true;
             files = [];
-            console.log(open)
             return;
         }
-        loadedFiles = [...loadedFiles, ...files];
+        loadedFiles = [...files];
         files = [];
-        console.log(loadedFiles)
     }
 
     const onSend = () => {
         if($status === "inProgress") return
-        //TODO: send files throw webSocket
-        loadedFiles = []
         $status = "inProgress"
-        //simulate working shit
+        socket.send(JSON.stringify(
+            {
+                command: "video"
+            }
+        ))
+        const data = new FormData();
+        data.append('video', loadedFiles[0], loadedFiles[0].name);
+        $filename = loadedFiles[0].name
+        waitForVideoId(() => {
+            data.append('id', $videoId)
+            sendVideo(data, () => {
+                $status = "wait"
+                idName.set($videoId, $filename)
+            }, () => {
+                $status = "wait"
+            })
+        })
+        loadedFiles = []
         //TODO: await answer and stop awaiting if cansel
-        $downloadData = []
-        setTimeout(() => {
-            $downloadData = [ ...$downloadData,
-                {id: "a", time: "19.12.2020 13:50", longitude: "14.2323", latitude: "14.2323"},
-                {id: "b", time: "18.11.2021 13:50", longitude: "15.2323", latitude: "15.2323"},
-                {id: "c", time: "17.10.2022 13:50", longitude: "16.2323", latitude: "16.2323"},
-            ]
-        }, 2000)
-        setTimeout(() => {
-            $status = "done";
-            $downloadData = [ ...$downloadData,
-                {id: "d", time: "19.12.2020 13:50", longitude: "14.2323", latitude: "14.2323"},
-                {id: "e", time: "18.11.2021 13:50", longitude: "15.2323", latitude: "15.2323"},
-                {id: "f", time: "17.10.2022 13:50", longitude: "16.2323", latitude: "16.2323"},
-                {id: "g", time: "17.10.2022 13:50", longitude: "16.2323", latitude: "16.2323"},
-            ]
-        }, 4000)
     }
 
 </script>
 
 <Modal bind:open passiveModal modalHeading="Слишком много файлов">
     <p>
-        Максимум можно загрузить 5 файлов за раз.<br/> Выберите файлы заново.
+        Максимум можно загрузить {maxFileNumber} файл за раз.<br/> Выберите файлы заново.
     </p>
 </Modal>
 
@@ -75,7 +86,6 @@
             <FileUploaderButton
                 bind:this={fileUploader}
                 accept = {acceptedFileTypes}
-                multiple
                 labelText="Загрузить файл"
                 status="complete"
                 size="field"
