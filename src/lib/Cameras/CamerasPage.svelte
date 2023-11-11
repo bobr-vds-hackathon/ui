@@ -32,6 +32,7 @@
             }
         }
         const jsonBody = JSON.stringify(body)
+        //console.log(jsonBody)
         socket.send(jsonBody)
     }
 </script>

@@ -29,7 +29,7 @@
             {page}
     >
         <svelte:fragment slot="expanded-row" let:row>
-            <TableInner />
+            <TableInner src={row.imgSrc} id={row.id} file={row.file}/>
         </svelte:fragment>
 
         <Toolbar>

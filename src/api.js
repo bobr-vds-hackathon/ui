@@ -4,7 +4,7 @@ import {convertDateFormat} from "./util.js";
 
 const socket = new WebSocket("ws://bobr.frieren.argraur.dev/ws")
 socket.addEventListener('open', (e) => {
-
+    //console.log("Connecte to WebSocket")
 })
 socket.addEventListener('message', (event) => {
     const message = JSON.parse(event.data)
@@ -73,7 +73,8 @@ export const sendVideo = async (data, onSuccess, onError) => {
 
 // @ts-ignore
 export const sendCorrection = async (data, onSuccess, onError) => {
-    const response = await fetch(`https://bobr.frieren.argraur.dev/correction`,
+    //console.log(data)
+    const response = await fetch(`https://bobr.frieren.argraur.dev/correct`,
         {
             headers: {
                 'Content-Type': 'application/json'
