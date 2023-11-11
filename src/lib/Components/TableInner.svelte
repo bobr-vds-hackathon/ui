@@ -7,6 +7,7 @@
     export let file;
     let checked = false;
     let buttonText = "Отправить"
+    let disabled = false;
 </script>
 
 <div class="container">
@@ -20,9 +21,13 @@
             file: file
         }
         //console.log(JSON.stringify(data))
-        sendCorrection(JSON.stringify(data), () => {buttonText="Спасибо"}, () => {})
+        sendCorrection(JSON.stringify(data), () => {
+            buttonText="Спасибо";
+            checked = false;
+            disabled = true;
+            }, () => {})
     }}>
-        <Checkbox id={id + file} labelText="Произошло ложное срабатывание системы" bind:checked/>
+        <Checkbox id={id + file} labelText="Произошло ложное срабатывание системы" bind:checked bind:disabled/>
         <Button type="submit" style="margin-top: 2vh">{buttonText}</Button>
     </Form>
 </div>
